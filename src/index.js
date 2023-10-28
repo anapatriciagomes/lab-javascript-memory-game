@@ -32,12 +32,13 @@ const pairsGuessed = document.getElementById('pairs-guessed');
 
 window.addEventListener('load', event => {
   let html = '';
+  memoryGame.shuffleCards();
   memoryGame.cards.forEach(pic => {
     html += `
-      <div class="card" data-card-name="${pic.name}">
-        <div class="back" name="${pic.img}"></div>
-        <div class="front" style="background: url(img/${pic.img}) no-repeat"></div>
-      </div>
+    <div class="card" data-card-name="${pic.name}">
+    <div class="back" name="${pic.img}"></div>
+    <div class="front" style="background: url(img/${pic.img}) no-repeat"></div>
+    </div>
     `;
   });
 
@@ -47,28 +48,28 @@ window.addEventListener('load', event => {
   // Bind the click event of each element to a function
   document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', () => {
-      console.log(`Card clicked: ${card.getAttribute('data-card-name')}`);
-      memoryGame.pickedCards.push(card.getAttribute('data-card-name'));
+      console.log(`Card clicked: ${card}`);
+      memoryGame.pickedCards.push(card);
       console.log(memoryGame.pickedCards);
-      card.classList.toggle('turned');
+      card.setAttribute('class', 'card turned');
 
       if (memoryGame.pickedCards.length === 2) {
         const pairCheck = memoryGame.checkIfPair(
-          memoryGame.pickedCards[0],
-          memoryGame.pickedCards[1]
+          memoryGame.pickedCards[0].getAttribute('data-card-name'),
+          memoryGame.pickedCards[1].getAttribute('data-card-name')
         );
         if (pairCheck === false) {
-          card.classList.toggle('turned');
-          memoryGame.pairsClicked++;
-          pairsClicked.innerText = memoryGame.pairsClicked;
-        } else if (pairCheck === true) {
-          card.classList.toggle('blocked');
-          memoryGame.pairsClicked++;
-          pairsClicked.innerText = memoryGame.pairsClicked;
-          memoryGame.pairsGuessed++;
-          pairsGuessed.innerText = memoryGame.pairsGuessed;
+          setTimeout(() => {
+            memoryGame.pickedCards.forEach(pickedCard => {
+              pickedCard.setAttribute('class', 'card');
+            });
+            memoryGame.pickedCards = [];
+          }, 1000);
+        } else {
+          memoryGame.pickedCards = [];
         }
-        memoryGame.pickedCards = [];
+        pairsClicked.innerText = memoryGame.pairsClicked;
+        pairsGuessed.innerText = memoryGame.pairsGuessed;
         checkIfFinished();
       }
     });

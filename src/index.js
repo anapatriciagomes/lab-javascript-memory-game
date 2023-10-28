@@ -27,6 +27,9 @@ const cards = [
 
 const memoryGame = new MemoryGame(cards);
 
+const pairsClicked = document.getElementById('pairs-clicked');
+const pairsGuessed = document.getElementById('pairs-guessed');
+
 window.addEventListener('load', event => {
   let html = '';
   memoryGame.cards.forEach(pic => {
@@ -44,7 +47,9 @@ window.addEventListener('load', event => {
   // Bind the click event of each element to a function
   document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', () => {
-      memoryGame.pickedCards.push(card);
+      console.log(`Card clicked: ${card.getAttribute('data-card-name')}`);
+      memoryGame.pickedCards.push(card.getAttribute('data-card-name'));
+      console.log(memoryGame.pickedCards);
       card.classList.toggle('turned');
 
       if (memoryGame.pickedCards.length === 2) {
@@ -54,8 +59,14 @@ window.addEventListener('load', event => {
         );
         if (pairCheck === false) {
           card.classList.toggle('turned');
+          memoryGame.pairsClicked++;
+          pairsClicked.innerText = memoryGame.pairsClicked;
         } else if (pairCheck === true) {
           card.classList.toggle('blocked');
+          memoryGame.pairsClicked++;
+          pairsClicked.innerText = memoryGame.pairsClicked;
+          memoryGame.pairsGuessed++;
+          pairsGuessed.innerText = memoryGame.pairsGuessed;
         }
         memoryGame.pickedCards = [];
         checkIfFinished();

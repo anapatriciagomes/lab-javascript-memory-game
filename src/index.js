@@ -22,14 +22,14 @@ const cards = [
   { name: 'spiderman', img: 'spiderman.jpg' },
   { name: 'superman', img: 'superman.jpg' },
   { name: 'the avengers', img: 'the-avengers.jpg' },
-  { name: 'thor', img: 'thor.jpg' }
+  { name: 'thor', img: 'thor.jpg' },
 ];
 
 const memoryGame = new MemoryGame(cards);
 
-window.addEventListener('load', (event) => {
+window.addEventListener('load', event => {
   let html = '';
-  memoryGame.cards.forEach((pic) => {
+  memoryGame.cards.forEach(pic => {
     html += `
       <div class="card" data-card-name="${pic.name}">
         <div class="back" name="${pic.img}"></div>
@@ -42,10 +42,30 @@ window.addEventListener('load', (event) => {
   document.querySelector('#memory-board').innerHTML = html;
 
   // Bind the click event of each element to a function
-  document.querySelectorAll('.card').forEach((card) => {
+  document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', () => {
-      // TODO: write some code here
-      console.log(`Card clicked: ${card}`);
+      memoryGame.pickedCards.push(card);
+      card.classList.toggle('turned');
+
+      if (memoryGame.pickedCards.length === 2) {
+        const pairCheck = memoryGame.checkIfPair(
+          memoryGame.pickedCards[0],
+          memoryGame.pickedCards[1]
+        );
+        if (pairCheck === false) {
+          card.classList.toggle('turned');
+        } else if (pairCheck === true) {
+          card.classList.toggle('blocked');
+        }
+        memoryGame.pickedCards = [];
+        checkIfFinished();
+      }
     });
   });
+
+  const checkIfFinished = () => {
+    if (memoryGame.checkIfFinished() === true) {
+      alert('CONGRATULATIONS, YOU WON!!!');
+    }
+  };
 });

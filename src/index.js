@@ -29,6 +29,7 @@ const memoryGame = new MemoryGame(cards);
 
 const pairsClicked = document.getElementById('pairs-clicked');
 const pairsGuessed = document.getElementById('pairs-guessed');
+const pageTitle = document.querySelector('h1');
 
 window.addEventListener('load', event => {
   let html = '';
@@ -77,7 +78,8 @@ window.addEventListener('load', event => {
 
   const checkIfFinished = () => {
     if (memoryGame.checkIfFinished() === true) {
-      alert('CONGRATULATIONS, YOU WON!!!');
+      // alert('CONGRATULATIONS, YOU WON!!!');
+      pageTitle.innerText = 'CONGRATULATIONS, YOU WON!!!';
     }
   };
 });

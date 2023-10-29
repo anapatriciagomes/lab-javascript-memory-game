@@ -11,13 +11,12 @@ class MemoryGame {
       return undefined;
     } else {
       for (let i = this.cards.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * i);
+        let j = Math.floor(Math.random() * (i + 1));
         let temp = this.cards[i];
         this.cards[i] = this.cards[j];
         this.cards[j] = temp;
-
-        return this.cards;
       }
+      return this.cards;
     }
   }
 
